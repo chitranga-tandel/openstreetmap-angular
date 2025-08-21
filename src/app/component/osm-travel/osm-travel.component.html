@@ -1,0 +1,133 @@
+<div class="container">
+  <!-- Left side -->
+  <div class="left-panel">
+    <mat-card class="filter-card">
+      <div class="filter-fields">
+        <mat-form-field appearance="outline">
+          <mat-label>From Date & Time</mat-label>
+          <input
+            matInput
+            [ngxMatDatetimePicker]="fromPicker"
+            [(ngModel)]="fromDate"
+          />
+          <ngx-mat-datetime-picker #fromPicker>
+            <ngx-mat-datepicker-actions>
+              <button mat-button ngxMatDatepickerApply>
+                <mat-icon>check</mat-icon>
+              </button>
+            </ngx-mat-datepicker-actions>
+          </ngx-mat-datetime-picker>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="fromPicker"
+          ></mat-datepicker-toggle>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>To Date & Time</mat-label>
+          <input
+            matInput
+            [ngxMatDatetimePicker]="toPicker"
+            [(ngModel)]="toDate"
+          />
+          <ngx-mat-datetime-picker #toPicker>
+            <ngx-mat-datepicker-actions>
+              <button mat-button ngxMatDatepickerApply>
+                <mat-icon>check</mat-icon>
+              </button>
+            </ngx-mat-datepicker-actions>
+          </ngx-mat-datetime-picker>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="toPicker"
+          ></mat-datepicker-toggle>
+        </mat-form-field>
+
+        <mat-form-field
+          class="date-time-field"
+          subscriptSizing="dynamic"
+          style="
+            position: absolute;
+            top: -10000px;
+            left: -10000px;
+            visibility: hidden;
+          "
+        >
+          <input matInput [matDatepicker]="fauxPicker" />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="fauxPicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #fauxPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="user-filter">
+          <mat-label>Select User</mat-label>
+          <input
+            type="text"
+            placeholder="Search"
+            aria-label="User"
+            matInput
+            [formControl]="userCtrl"
+            [matAutocomplete]="auto"
+            (focus)="onUserSelectFocus()"
+          />
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="applyUserFilter($event.option.value)"
+          >
+            <mat-option *ngFor="let user of filteredUsers" [value]="user">
+              {{ user }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+
+      <button mat-raised-button color="primary" (click)="applyFilters()">
+        Apply
+      </button>
+    </mat-card>
+
+    <!-- Travel List -->
+    <mat-card class="list-card">
+      <div
+        *ngIf="filteredTravels.length == 0; else travelList"
+        class="no-records"
+      >
+        <span style="display: grid">
+          <img
+            style="width: 60px; height: 50px"
+            src="assets/icons/datanotfound.png"
+            class="travel-person"
+          />
+          <span style="margin-left: -26px; padding: 8px">Data Not Found.</span>
+        </span>
+      </div>
+      <ng-template #travelList>
+        <h3>Travel List</h3>
+        <mat-list>
+          <mat-list-item
+            *ngFor="let t of filteredTravels"
+            [class.selected]="t === selectedTravel"
+            class="travel-list-item"
+            (click)="zoomToTravel(t)"
+          >
+            <div class="travel-row">
+              <span style="width: 50px">
+                <img src="assets/icons/person-4.png" class="travel-person" />
+              </span>
+              <span class="user">{{ t.user }}</span>
+              <span class="location">{{ t.location }}</span>
+              <span class="date">{{ t.date | date : "MMM d, y, h:mm a" }}</span>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </ng-template>
+    </mat-card>
+  </div>
+
+  <!-- Right side -->
+  <div class="right-panel">
+    <div id="map"></div>
+  </div>
+</div>

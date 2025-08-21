@@ -1,0 +1,24 @@
+/* You can add global styles to this file, and also import other style files */
+@import "@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mdc-list-item__primary-text {
+  width: 100%;
+}
+.mat-accent {
+    --mat-option-selected-state-label-text-color: blue !important;
+}
+
+/* Limit Angular Material datepicker popup size */
+/* .mat-datepicker-content {
+  max-width: 280px !important;
+  min-width: 250px !important;
+} */
+
+/* Align popup better */
+/* .cdk-overlay-pane {
+  margin-left: 10px !important;
+} */
+
